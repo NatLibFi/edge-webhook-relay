@@ -25,15 +25,12 @@
     "start:dev": "babel-node ./src/index",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
-    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/**/*.spec.js",
-    "test": "npm run lint && npm run test:base",
-    "test:dev": "clear && npm run lint:dev && npm run coverage",
+    "test": "npm run lint",
+    "test:dev": "clear && npm run lint:dev",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
     "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon",
-    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
+    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.20.0",
     "@natlibfi/melinda-backend-commons": "^2.1.0",
