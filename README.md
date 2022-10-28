@@ -1,9 +1,9 @@
-# Webhook relay
+# Edge webhook relay
 
 Webhook relay for **University Of Helsinki (The National Library Of Finland)**
 
 ## Envs
-### Generic transformer envs
+### Generic envs
 | Name                  | Description                         | default or e.g.                                          |
 |-----------------------|-------------------------------------|----------------------------------------------------------|
 | OPENSHIFT_WEBHOOK_URL | OpenShift webhook url               | 'https://xxx:0000/apis/build.openshift.io/v1/namespaces' |
