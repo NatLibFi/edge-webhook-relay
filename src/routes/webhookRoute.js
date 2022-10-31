@@ -2,18 +2,19 @@ import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import fetch from 'node-fetch';
 import httpStatus from 'http-status';
+import bodyParser from 'body-parser';
 
 export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
 
   return new Router()
-    .post('/:project/:buildConfig/:id', handleHook)
+    .post('/:project/:buildConfig/:id', bodyParser.json(), handleHook)
     .use(handleError);
 
   function handleHook(req, res) {
     logger.debug('webhookRoute/handleHook');
     const {project, buildConfig, id} = req.params;
-    const data = JSON.parse(req.body);
+    const data = req.body;
     logger.debug('data: ', data);
     const triggerUrl = `${openshiftWebhookUrl}/${project}/buildconfigs/${buildConfig}/webhooks/${id}/generic`;
     logger.debug(triggerUrl);
@@ -30,9 +31,9 @@ export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused
     res.status(httpStatus.OK);
   }
 
-  function handleError(req, res, next) {
+  function handleError(err, req, res, next) {
     logger.debug('webhookRoute/handleError');
-    logger.error('Error', req, res);
+    logger.error('Error: ', err);
     next();
   }
 }
