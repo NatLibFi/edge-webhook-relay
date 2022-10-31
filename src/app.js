@@ -1,6 +1,7 @@
 import express from 'express';
 import httpStatus from 'http-status';
 import fetch from 'node-fetch';
+import ipRangeCheck from 'ip-range-check';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
@@ -23,7 +24,7 @@ export default async function ({
 
   async function initExpress() { // eslint-disable-line max-statements
     const metaList = await getMetaList(githubMetaUrl);
-    // logger.debug(metaList); // eslint-disable-line
+    logger.debug(metaList.actions); // eslint-disable-line
 
     const app = express();
     app.set('trust proxy', true);
@@ -74,7 +75,7 @@ export default async function ({
       logger.debug(connectionIp);
       const parsedConnectionIp = connectionIp.replace(/::ffff:/u, '');
       logger.debug(parsedConnectionIp);
-      if (metaList.actions.some(ip => `${parsedConnectionIp}` === ip) || ipWhiteList.some(ip => ip === `${parsedConnectionIp}`)) {
+      if (ipRangeCheck(`${parsedConnectionIp}`, [...metaList.actions, ...ipWhiteList])) {
         logger.debug('IP ok');
         return next();
       }

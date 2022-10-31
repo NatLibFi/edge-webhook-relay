@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "Webhook edge relay service for github to openshift",
   "repository": {
-		"type": "git",
-		"url": "git@github.com:natlibfi/edge-webhook-relay.git"
-	},
+    "type": "git",
+    "url": "git@github.com:natlibfi/edge-webhook-relay.git"
+  },
   "author": {
-		"name": "The National Library of Finland"
-	},
-	"keywords": [],
-	"homepage": "https://github.com/natlibfi/edge-webhook-relay",
-	"bugs": {
+    "name": "The National Library of Finland"
+  },
+  "keywords": [],
+  "homepage": "https://github.com/natlibfi/edge-webhook-relay",
+  "bugs": {
     "url": "https://github.com/natlibfi/edge-webhook-relay/issues"
-	},
+  },
   "license": "MIT",
   "main": "src/index.js",
   "engines": {
@@ -38,6 +38,7 @@
     "debug": "^4.3.4",
     "express": "^4.18.2",
     "http-status": "^1.5.3",
+    "ip-range-check": "^0.2.0",
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
