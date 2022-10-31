@@ -26,7 +26,7 @@ export default async function ({
     // logger.debug(metaList); // eslint-disable-line
 
     const app = express();
-    app.set('trust proxy', true)
+    app.set('trust proxy', true);
     app.use(createExpressLogger());
     app.use(whiteListMiddleware);
     app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
