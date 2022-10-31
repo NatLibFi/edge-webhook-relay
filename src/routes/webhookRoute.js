@@ -11,8 +11,10 @@ export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused
     .use(handleError);
 
   function handleHook(req, res) {
+    logger.debug('webhookRoute/handleHook');
     const {project, buildConfig, id} = req.params;
     const data = JSON.parse(req.body);
+    logger.debug('data: ', data);
     const triggerUrl = `${openshiftWebhookUrl}/${project}/buildconfigs/${buildConfig}/webhooks/${id}/generic`;
     logger.debug(triggerUrl);
     fetch(
@@ -22,13 +24,14 @@ export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused
         headers: {
           'Content-Type': 'application/json'
         },
-        body: data
+        body: JSON.stringify(data)
       }
     );
     res.status(httpStatus.OK);
   }
 
   function handleError(req, res, next) {
+    logger.debug('webhookRoute/handleError');
     logger.error('Error', req, res);
     next();
   }
