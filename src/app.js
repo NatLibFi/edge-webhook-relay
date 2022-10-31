@@ -26,6 +26,7 @@ export default async function ({
     // logger.debug(metaList); // eslint-disable-line
 
     const app = express();
+    app.set('trust proxy', true)
     app.use(createExpressLogger());
     app.use(whiteListMiddleware);
     app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
@@ -69,7 +70,7 @@ export default async function ({
 
     function whiteListMiddleware(req, res, next) {
       logger.verbose('Middleware');
-      const connectionIp = req.ip || req.connection.remoteAddress;
+      const connectionIp = req.ip;
       logger.debug(connectionIp);
       const parsedConnectionIp = connectionIp.replace(/::ffff:/u, '');
       logger.debug(parsedConnectionIp);
