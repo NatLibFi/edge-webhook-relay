@@ -81,7 +81,7 @@ export default async function ({
       }
 
       logger.debug(`Bad IP: ${req.ip}`);
-      const err = new Error(`Bad IP: ${req.ip}`);
+      const err = new ApiError(httpStatus.FORBIDDEN, 'Invalid IP');
       return next(err);
     }
   }
