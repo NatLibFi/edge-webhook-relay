@@ -74,13 +74,13 @@ export default async function ({
       logger.debug(connectionIp);
       const parsedConnectionIp = connectionIp.replace(/::ffff:/u, '');
       logger.debug(parsedConnectionIp);
-      if (metaList.actions.includes(parsedConnectionIp) || ipWhiteList.includes(parsedConnectionIp)) {
+      if (metaList.actions.some(ip => `${parsedConnectionIp}` === ip) || ipWhiteList.some(ip => ip === `${parsedConnectionIp}`)) {
         logger.debug('IP ok');
         return next();
       }
 
-      logger.debug(`Bad IP: ${req.connection.remoteAddress}`);
-      const err = new Error(`Bad IP: ${req.connection.remoteAddress}`);
+      logger.debug(`Bad IP: ${req.ip}`);
+      const err = new Error(`Bad IP: ${req.ip}`);
       return next(err);
     }
   }
