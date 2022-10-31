@@ -28,7 +28,7 @@ export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused
         body: JSON.stringify(data)
       }
     );
-    res.sendStatus(httpStatus.OK);
+    res.status(httpStatus.OK).json({status: 200});
   }
 
   function handleError(err, req, res, next) {
