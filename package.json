@@ -17,7 +17,7 @@
   "license": "MIT",
   "main": "src/index.js",
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
     "prepare": "npm run build",
