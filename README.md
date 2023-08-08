@@ -1,4 +1,6 @@
 # Edge webhook relay
+[![Node Version](https://img.shields.io/node/v/@natlibfi/edge-webhook-relay.svg)]()
+
 
 Webhook relay for **University Of Helsinki (The National Library Of Finland)**
 
