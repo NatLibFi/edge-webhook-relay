@@ -64,6 +64,12 @@ jobs:
         with:
           url: ${{ secrets.WEBHOOK_URL_TEST }}
           body: '{"event": "${{ github.event_name }}","uri": "${{ github.repository }}","ref": "${{ github.ref }}","commit": "${{ github.sha }}"}'
+      - name: Test webhook for main
+        uses: joelwmale/webhook-action@master
+        if: github.ref == 'refs/heads/main'
+        with:
+          url: ${{ secrets.WEBHOOK_URL_TEST_MAIN }}
+          body: '{"event": "${{ github.event_name }}","uri": "${{ github.repository }}","ref": "${{ github.ref }}","commit": "${{ github.sha }}"}'
       - name: Prod webhook
         uses: joelwmale/webhook-action@master
         if: github.ref == 'refs/heads/main'
