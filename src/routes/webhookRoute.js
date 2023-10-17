@@ -10,6 +10,7 @@ export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused
   return new Router()
     .post('/:project/:buildConfig/:id', bodyParser.json(), handleHook)
     .post('/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
+    .post('/apis/build.openshift.io/v1/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
     .use(handleError);
 
   function handleHook(req, res) {
