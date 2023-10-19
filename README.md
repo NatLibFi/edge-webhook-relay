@@ -2,6 +2,12 @@
 
 Webhook relay for **University Of Helsinki (The National Library Of Finland)**
 
+## Working hook url schemas:
+
+* `https://<baseUrl>/<project>/<buildConfig>/<secret>`
+* `https://<baseUrl>/namespaces/<project>/buildconfigs/<buildConfig>/webhooks/<secret>/generic`
+* `https://<baseUrl>/apis/build.openshift.io/v1/namespaces/<project>/buildconfigs/<buildConfig>/webhooks/<secret>/generic`
+
 ## Envs
 ### Generic envs
 | Name                  | Description                         | default or e.g.                                          |
