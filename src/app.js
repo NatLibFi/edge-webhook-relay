@@ -75,7 +75,7 @@ export default async function ({
       logger.debug(connectionIp);
       const parsedConnectionIp = connectionIp.replace(/::ffff:/u, '');
       logger.debug(parsedConnectionIp);
-      if (ipRangeCheck(`${parsedConnectionIp}`, [...metaList.actions, ...ipWhiteList])) {
+      if (ipRangeCheck(`${parsedConnectionIp}`, [...metaList.hooks, ...metaList.actions, ...ipWhiteList])) {
         logger.debug('IP ok');
         return next();
       }
