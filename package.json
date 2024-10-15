@@ -1,6 +1,6 @@
 {
   "name": "edge-webhook-relay",
-  "version": "1.0.5-alpha.4",
+  "version": "1.0.5-alpha.5",
   "description": "Webhook edge relay service for github to openshift",
   "repository": {
     "type": "git",
