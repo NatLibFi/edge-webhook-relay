@@ -6,10 +6,11 @@ import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commo
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
 import createWebhookRoute from './routes/webhookRoute';
+import createUrlRoute from './routes/urlRoute';
 
 
 export default async function ({
-  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList
+  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList, urlWhiteList
 }) {
   const logger = createLogger();
   const server = await initExpress();
@@ -31,6 +32,7 @@ export default async function ({
     app.use(createExpressLogger());
     app.use(whiteListMiddleware);
     app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
+    app.use('/url', createUrlRoute(urlWhiteList));
 
     app.use(handleError);
 
