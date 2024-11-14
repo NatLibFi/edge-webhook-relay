@@ -13,8 +13,8 @@ export default function (urlWhiteList) {
   function handleHook(req, res) {
     const {triggerUrl} = req.query;
 
-    if (!urlWhiteList.some(urlRegexp => new RegExp(urlRegexp, 'u').test(url))) {
-      res.status(httpStatus.FORBIDDEN).json({status: 403});
+    if (!urlWhiteList.some(urlRegexp => new RegExp(urlRegexp, 'u').test(triggerUrl))) {
+      return res.status(httpStatus.FORBIDDEN).json({status: 403});
     }
 
     const data = req.body;
