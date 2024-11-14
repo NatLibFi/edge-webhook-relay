@@ -6,7 +6,6 @@ import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commo
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
 import createWebhookRoute from './routes/webhookRoute';
-import createUrlRoute from './routes/urlRoute';
 
 
 export default async function ({
@@ -31,8 +30,7 @@ export default async function ({
     app.set('trust proxy', true);
     app.use(createExpressLogger());
     app.use(whiteListMiddleware);
-    app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
-    app.use('/url', createUrlRoute(urlWhiteList));
+    app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl, urlWhiteList));
 
     app.use(handleError);
 
