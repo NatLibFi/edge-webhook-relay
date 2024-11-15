@@ -19,7 +19,7 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
     const {project, buildConfig, id} = req.params;
     const data = req.body;
 
-    if (repository in data && branch in data) {
+    if ('repository' in data && 'branch' in data) { // eslint-disable-line functional/no-conditional-statements
       logger.debug('Repository: ', data.repository);
       logger.debug('Branch: ', data.branch);
     }
