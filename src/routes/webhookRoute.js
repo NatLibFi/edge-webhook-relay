@@ -18,7 +18,12 @@ export default function (openshiftWebhookUrl, urlWhiteList) { // eslint-disable-
     logger.debug('webhookRoute/handleHook');
     const {project, buildConfig, id} = req.params;
     const data = req.body;
-    logger.debug('data: ', data);
+
+    if (repository in data && branch in data) {
+      logger.debug('Repository: ', data.repository);
+      logger.debug('Branch: ', data.branch);
+    }
+
     const triggerUrl = `${openshiftWebhookUrl}/${project}/buildconfigs/${buildConfig}/webhooks/${id}/generic`;
     fetch(
       triggerUrl,
@@ -41,7 +46,6 @@ export default function (openshiftWebhookUrl, urlWhiteList) { // eslint-disable-
     }
 
     const data = req.body;
-    logger.debug('data: ', data);
 
     fetch(
       triggerUrl,
