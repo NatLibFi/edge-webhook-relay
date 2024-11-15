@@ -36,7 +36,6 @@ export default function (openshiftWebhookUrl, urlWhiteList) { // eslint-disable-
   function handleUrlHook(req, res) {
     const {triggerUrl} = req.query;
 
-    logger.debug(`trigger url: ${triggerUrl}`);
     if (!urlWhiteList.some(urlRegexp => new RegExp(urlRegexp, 'u').test(triggerUrl))) {
       return res.status(httpStatus.FORBIDDEN).json({status: 403});
     }
