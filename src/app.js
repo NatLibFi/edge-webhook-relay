@@ -29,8 +29,7 @@ export default async function ({
     const app = express();
     app.set('trust proxy', true);
     app.use(createExpressLogger());
-    app.use(whiteListMiddleware);
-    app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl, urlWhiteList));
+    app.use('/webhooks', createWebhookRoute(whiteListMiddleware, openshiftWebhookUrl, urlWhiteList));
 
     app.use(handleError);
 

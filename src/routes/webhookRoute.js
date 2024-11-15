@@ -4,13 +4,13 @@ import fetch from 'node-fetch';
 import httpStatus from 'http-status';
 import bodyParser from 'body-parser';
 
-export default function (openshiftWebhookUrl, urlWhiteList) { // eslint-disable-line no-unused-vars
+export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
 
   return new Router()
-    .post('/:project/:buildConfig/:id', bodyParser.json(), handleHook)
-    .post('/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
-    .post('/apis/build.openshift.io/v1/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
+    .post('/:project/:buildConfig/:id', whiteListMiddleware, bodyParser.json(), handleHook)
+    .post('/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', whiteListMiddleware, bodyParser.json(), handleHook)
+    .post('/apis/build.openshift.io/v1/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', whiteListMiddleware, bodyParser.json(), handleHook)
     .post('/url', bodyParser.json(), handleUrlHook)
     .use(handleError);
 
