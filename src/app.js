@@ -9,7 +9,7 @@ import createWebhookRoute from './routes/webhookRoute';
 
 
 export default async function ({
-  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList
+  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList, urlWhiteList
 }) {
   const logger = createLogger();
   const server = await initExpress();
@@ -29,8 +29,7 @@ export default async function ({
     const app = express();
     app.set('trust proxy', true);
     app.use(createExpressLogger());
-    app.use(whiteListMiddleware);
-    app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
+    app.use('/webhooks', createWebhookRoute(whiteListMiddleware, openshiftWebhookUrl, urlWhiteList));
 
     app.use(handleError);
 
