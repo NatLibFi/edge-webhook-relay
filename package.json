@@ -17,61 +17,28 @@
   "license": "MIT",
   "main": "src/index.js",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
-    "prepare": "npm run build",
     "start": "node dist/index.js",
-    "start:dev": "babel-node ./src/index",
+    "prepare": "npm run build",
+    "build": "esbuild \"src/**/*.js\" --sourcemap --platform=node --outdir=dist",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
     "test": "npm run lint",
-    "test:dev": "clear && npm run lint:dev",
-    "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon",
-    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures"
+    "test:dev": "clear && npm run lint:dev"
   },
   "dependencies": {
-    "@babel/runtime": "^7.27.0",
-    "@natlibfi/melinda-backend-commons": "^2.3.1",
-    "@natlibfi/melinda-commons": "^13.0.16",
-    "body-parser": "^1.20.2",
-    "express": "^4.19.2",
-    "http-status": "^1.7.4",
-    "ip-range-check": "^0.2.0",
-    "node-fetch": "^2.7.0"
+    "@natlibfi/melinda-backend-commons": "next",
+    "@natlibfi/melinda-commons": "next",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "http-status": "^2.1.0",
+    "ip-range-check": "^0.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.27.0",
-    "@babel/core": "^7.26.10",
-    "@babel/node": "^7.26.0",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/register": "^7.25.9",
-    "@natlibfi/eslint-config-melinda-backend": "^3.0.5",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.57.0",
-    "nodemon": "^3.1.4"
-  },
-  "eslintConfig": {
-    "extends": "@natlibfi/melinda-backend"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": "maintained node versions"
-        }
-      ]
-    ]
-  },
-  "nodemonConfig": {
-    "exec": "DEBUG=@natlibfi* npm run lint:dev && npm run start:dev",
-    "watch": [
-      "src/*",
-      "package.json"
-    ],
-    "ext": "js",
-    "delay": 2.5
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0"
   }
 }
