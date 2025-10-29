@@ -1,11 +1,10 @@
 import express from 'express';
 import httpStatus from 'http-status';
-import fetch from 'node-fetch';
 import ipRangeCheck from 'ip-range-check';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
-import createWebhookRoute from './routes/webhookRoute';
+import createWebhookRoute from './routes/webhookRoute.js';
 
 
 export default async function ({
