@@ -26,6 +26,8 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
     }
 
     const triggerUrl = `${openshiftWebhookUrl}/${project}/buildconfigs/${buildConfig}/webhooks/${id}/generic`;
+
+    // NB: Fetch not awaited here on purpose
     fetch(
       triggerUrl,
       {
@@ -35,15 +37,15 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
         }
       }
     );
-    res.status(httpStatus.OK).json({status: 200});
+    return res.status(httpStatus.OK).json({status: 200});
   }
 
-  function handleUrlHook(req, res) {
+  async function handleUrlHook(req, res) {
     const {triggerUrl} = req.query;
 
     const triggerUrlMatches = matchTriggerUrl(triggerUrl, urlWhiteList);
     if (triggerUrlMatches !== true) {
-      res.status(triggerUrlMatches.status).json(triggerUrlMatches);
+      return res.status(triggerUrlMatches.status).json(triggerUrlMatches);
     }
 
     const data = req.body;
@@ -57,6 +59,7 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
       logger.debug('Branch: ', data.branch);
     }
 
+    // NB: Fetch not awaited here on purpose
     fetch(
       triggerUrl,
       {
@@ -66,7 +69,8 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
         }
       }
     );
-    res.status(httpStatus.OK).json({status: 200});
+
+    return res.status(httpStatus.OK).json({status: 200});
   }
 
   function handleError(err, req, res, next) {
