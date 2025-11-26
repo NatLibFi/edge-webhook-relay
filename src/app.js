@@ -1,42 +1,40 @@
 import express from 'express';
 import httpStatus from 'http-status';
-import fetch from 'node-fetch';
 import ipRangeCheck from 'ip-range-check';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
-import createWebhookRoute from './routes/webhookRoute';
+import createWebhookRoute from './routes/webhookRoute.js';
 
 
 export default async function ({
-  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList
+  httpPort, githubMetaUrl, openshiftWebhookUrl, ipWhiteList, urlWhiteList
 }) {
   const logger = createLogger();
   const server = await initExpress();
 
   // Soft shutdown function
   server.on('close', () => {
-    logger.info('Initiating soft shutdown of Melinda REST API');
+    logger.info('Initiating soft shutdown of edge-webhook-relay');
     // Things that need soft shutdown
   });
 
   return server;
 
-  async function initExpress() { // eslint-disable-line max-statements
+  async function initExpress() {
     const metaList = await getMetaList(githubMetaUrl);
-    logger.debug(metaList.actions); // eslint-disable-line
+    logger.debug(metaList.actions);
 
     const app = express();
     app.set('trust proxy', true);
     app.use(createExpressLogger());
-    app.use(whiteListMiddleware);
-    app.use('/webhooks', createWebhookRoute(openshiftWebhookUrl));
+    app.use('/webhooks', createWebhookRoute(whiteListMiddleware, openshiftWebhookUrl, urlWhiteList));
 
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
 
-    function handleError(err, req, res, next) { // eslint-disable-line max-statements
+    function handleError(err, req, res, next) {
       logger.info('App/handleError');
       if (err) {
         logger.error(err);
@@ -57,8 +55,8 @@ export default async function ({
       next();
     }
 
-    function getMetaList(githubMetaUrl) {
-      return fetch(
+    async function getMetaList(githubMetaUrl) {
+      const response = await fetch(
         githubMetaUrl,
         {
           method: 'get',
@@ -66,7 +64,9 @@ export default async function ({
             'Accept': 'application/json'
           }
         }
-      ).then(result => result.json());
+      );
+
+      return response.json();
     }
 
     function whiteListMiddleware(req, res, next) {

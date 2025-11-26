@@ -1,35 +1,76 @@
 import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import fetch from 'node-fetch';
 import httpStatus from 'http-status';
 import bodyParser from 'body-parser';
+import {matchTriggerUrl, validateUrlWhiteList} from '../services/urlService';
 
-export default function (openshiftWebhookUrl) { // eslint-disable-line no-unused-vars
+export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList) {
   const logger = createLogger();
+  validateUrlWhiteList(urlWhiteList);
 
   return new Router()
-    .post('/:project/:buildConfig/:id', bodyParser.json(), handleHook)
-    .post('/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
-    .post('/apis/build.openshift.io/v1/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', bodyParser.json(), handleHook)
+    .post('/:project/:buildConfig/:id', whiteListMiddleware, bodyParser.json(), handleHook)
+    .post('/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', whiteListMiddleware, bodyParser.json(), handleHook)
+    .post('/apis/build.openshift.io/v1/namespaces/:project/buildconfigs/:buildConfig/webhooks/:id/generic', whiteListMiddleware, bodyParser.json(), handleHook)
+    .post('/url', bodyParser.json(), handleUrlHook)
     .use(handleError);
 
   function handleHook(req, res) {
     logger.debug('webhookRoute/handleHook');
     const {project, buildConfig, id} = req.params;
     const data = req.body;
-    logger.debug('data: ', data);
+
+    if (typeof data === 'object' && 'repository' in data && 'branch' in data) {
+      logger.debug('Repository: ', data.repository);
+      logger.debug('Branch: ', data.branch);
+    }
+
     const triggerUrl = `${openshiftWebhookUrl}/${project}/buildconfigs/${buildConfig}/webhooks/${id}/generic`;
+
+    // NB: Fetch not awaited here on purpose
     fetch(
       triggerUrl,
       {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
       }
     );
-    res.status(httpStatus.OK).json({status: 200});
+    return res.status(httpStatus.OK).json({status: 200});
+  }
+
+  async function handleUrlHook(req, res) {
+    const {triggerUrl} = req.query;
+
+    const triggerUrlMatches = matchTriggerUrl(triggerUrl, urlWhiteList);
+    if (triggerUrlMatches !== true) {
+      return res.status(triggerUrlMatches.status).json(triggerUrlMatches);
+    }
+
+    const data = req.body;
+
+    if (typeof data === 'object' && 'source' in data) {
+      logger.debug('Trigger url source: ', data.source);
+    }
+
+    if (typeof data === 'object' && 'repository' in data && 'branch' in data) {
+      logger.debug('Repository: ', data.repository);
+      logger.debug('Branch: ', data.branch);
+    }
+
+    // NB: Fetch not awaited here on purpose
+    fetch(
+      triggerUrl,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    return res.status(httpStatus.OK).json({status: 200});
   }
 
   function handleError(err, req, res, next) {
