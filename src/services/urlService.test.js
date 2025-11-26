@@ -52,7 +52,8 @@ describe('validateUrlWhiteList', () => {
 
 describe('matchTriggerUrl', () => {
   it('Passes on valid url', () => {
-    assert.equal(matchTriggerUrl('https://.*', ['https:\/\/.*']), true);
+    assert.equal(matchTriggerUrl('https://test', ['https:\/\/.*']), true);
+    assert.equal(matchTriggerUrl('https://example.com/test?param=test', ['https:\/\/.*']), true);
   });
 
   it('Fails on non string url', () => {
