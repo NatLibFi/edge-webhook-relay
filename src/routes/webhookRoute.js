@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import httpStatus from 'http-status';
 import bodyParser from 'body-parser';
-import {matchTriggerUrl, validateUrlWhiteList} from '../services/urlService';
+import {matchTriggerUrl, validateUrlWhiteList} from '../services/urlService.js';
 
 export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList) {
   const logger = createLogger();
