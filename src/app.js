@@ -15,7 +15,7 @@ export default async function ({
 
   // Soft shutdown function
   server.on('close', () => {
-    logger.info('Initiating soft shutdown of Melinda REST API');
+    logger.info('Initiating soft shutdown of edge-webhook-relay');
     // Things that need soft shutdown
   });
 
