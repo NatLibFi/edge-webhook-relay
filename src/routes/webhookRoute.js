@@ -2,9 +2,11 @@ import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import httpStatus from 'http-status';
 import bodyParser from 'body-parser';
+import {matchTriggerUrl, validateUrlWhiteList} from '../services/urlService';
 
-export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList) { // eslint-disable-line no-unused-vars
+export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList) {
   const logger = createLogger();
+  validateUrlWhiteList(urlWhiteList);
 
   return new Router()
     .post('/:project/:buildConfig/:id', whiteListMiddleware, bodyParser.json(), handleHook)
@@ -40,8 +42,8 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
   function handleUrlHook(req, res) {
     const {triggerUrl} = req.query;
 
-    if (!urlWhiteList.some(urlRegexp => new RegExp(urlRegexp, 'u').test(triggerUrl))) {
-      return res.status(httpStatus.FORBIDDEN).json({status: 403});
+    if (!matchTriggerUrl(triggerUrl, urlWhiteList)) {
+      res.status(httpStatus.FORBIDDEN).json({status: 403});
     }
 
     const data = req.body;

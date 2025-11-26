@@ -21,9 +21,9 @@ export default async function ({
 
   return server;
 
-  async function initExpress() { // eslint-disable-line max-statements
+  async function initExpress() {
     const metaList = await getMetaList(githubMetaUrl);
-    logger.debug(metaList.actions); // eslint-disable-line
+    logger.debug(metaList.actions);
 
     const app = express();
     app.set('trust proxy', true);
@@ -34,7 +34,7 @@ export default async function ({
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
 
-    function handleError(err, req, res, next) { // eslint-disable-line max-statements
+    function handleError(err, req, res, next) {
       logger.info('App/handleError');
       if (err) {
         logger.error(err);
