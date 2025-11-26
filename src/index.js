@@ -14,10 +14,10 @@ async function run() {
     process
       .on('SIGTERM', handleSignal)
       .on('SIGINT', handleInterrupt)
-      .on('uncaughtException', (err, _origin) => {
+      .on('uncaughtException', (err, _origin) => { // eslint-disable-line no-unused-vars
         handleTermination({code: 1, message: err.message});
       })
-      .on('unhandledRejection', (reason, _promise) => {
+      .on('unhandledRejection', (reason, _promise) => { // eslint-disable-line no-unused-vars
         const message = reason instanceof Error ? reason.message : 'Unknown reason'
         handleTermination({code: 1, message});
       });
