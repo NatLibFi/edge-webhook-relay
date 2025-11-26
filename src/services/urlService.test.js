@@ -54,7 +54,8 @@ describe('matchTriggerUrl', () => {
   it('Passes on valid url', () => {
     assert.equal(matchTriggerUrl('https://test', ['https:\/\/.*']), true);
     assert.equal(matchTriggerUrl('https://example.com/test?param=test', ['https:\/\/.*']), true);
-    assert.equal(matchTriggerUrl('https://example.com/test?param=test', ['https:\/\/example.com\/test?param=test']), true);
+    assert.equal(matchTriggerUrl('https://example.com/test?param=test', ['https:\/\/example\.com\/.*']), true);
+    assert.equal(matchTriggerUrl('https://example.com/test?param=test', ['https:\/\/example\.com\/test.*']), true);
   });
 
   it('Fails on non string url', () => {
