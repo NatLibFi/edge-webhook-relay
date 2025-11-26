@@ -20,7 +20,7 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
     const {project, buildConfig, id} = req.params;
     const data = req.body;
 
-    if ('repository' in data && 'branch' in data) {
+    if (typeof data === 'object' && 'repository' in data && 'branch' in data) {
       logger.debug('Repository: ', data.repository);
       logger.debug('Branch: ', data.branch);
     }
@@ -50,6 +50,11 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
 
     if (typeof data === 'object' && 'source' in data) {
       logger.debug('Trigger url source: ', data.source);
+    }
+
+    if (typeof data === 'object' && 'repository' in data && 'branch' in data) {
+      logger.debug('Repository: ', data.repository);
+      logger.debug('Branch: ', data.branch);
     }
 
     fetch(
