@@ -32,8 +32,7 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
       }
     );
     res.status(httpStatus.OK).json({status: 200});
@@ -49,14 +48,17 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
 
     const data = req.body;
 
+    if (typeof data === 'object' && 'source' in data) {
+      logger.debug('Trigger url source: ', data.source);
+    }
+
     fetch(
       triggerUrl,
       {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
       }
     );
     res.status(httpStatus.OK).json({status: 200});
