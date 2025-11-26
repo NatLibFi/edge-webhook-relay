@@ -5,3 +5,6 @@ dist
 .nyc_output
 .env
 testMaterial.xml
+
+# VSCode workspace settings
+.vscode
