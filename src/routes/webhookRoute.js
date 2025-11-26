@@ -42,8 +42,9 @@ export default function (whiteListMiddleware, openshiftWebhookUrl, urlWhiteList)
   function handleUrlHook(req, res) {
     const {triggerUrl} = req.query;
 
-    if (!matchTriggerUrl(triggerUrl, urlWhiteList)) {
-      res.status(httpStatus.FORBIDDEN).json({status: 403});
+    const triggerUrlMatches = matchTriggerUrl(triggerUrl, urlWhiteList);
+    if (triggerUrlMatches !== true) {
+      res.status(triggerUrlMatches.status).json(triggerUrlMatches);
     }
 
     const data = req.body;
