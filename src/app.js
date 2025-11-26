@@ -15,7 +15,7 @@ export default async function ({
 
   // Soft shutdown function
   server.on('close', () => {
-    logger.info('Initiating soft shutdown of Melinda REST API');
+    logger.info('Initiating soft shutdown of edge-webhook-relay');
     // Things that need soft shutdown
   });
 
@@ -55,8 +55,8 @@ export default async function ({
       next();
     }
 
-    function getMetaList(githubMetaUrl) {
-      return fetch(
+    async function getMetaList(githubMetaUrl) {
+      const response = await fetch(
         githubMetaUrl,
         {
           method: 'get',
@@ -64,7 +64,9 @@ export default async function ({
             'Accept': 'application/json'
           }
         }
-      ).then(result => result.json());
+      );
+
+      return response.json();
     }
 
     function whiteListMiddleware(req, res, next) {
