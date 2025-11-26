@@ -14,22 +14,23 @@ async function run() {
     process
       .on('SIGTERM', handleSignal)
       .on('SIGINT', handleInterrupt)
-      .on('uncaughtException', ({stack}) => {
-        handleTermination({code: 1, message: stack});
+      .on('uncaughtException', (err, _origin) => { // eslint-disable-line no-unused-vars
+        handleTermination({code: 1, message: err.message});
       })
-      .on('unhandledRejection', ({stack}) => {
-        handleTermination({code: 1, message: stack});
+      .on('unhandledRejection', (reason, _promise) => { // eslint-disable-line no-unused-vars
+        const message = reason instanceof Error ? reason.message : 'Unknown reason'
+        handleTermination({code: 1, message});
       });
+  }
 
-    function handleSignal(signal) {
-      handleTermination({code: 1, message: `Received ${signal}`});
-    }
+  function handleSignal(signal) {
+    handleTermination({code: 1, message: `Received ${signal}`});
   }
 
   function handleTermination({code = 0, message = false}) {
     logMessage(message);
 
-    process.exit(code); // eslint-disable-line no-process-exit
+    process.exit(code);
 
     function logMessage(message) {
       if (message) {
