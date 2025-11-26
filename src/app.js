@@ -55,8 +55,8 @@ export default async function ({
       next();
     }
 
-    function getMetaList(githubMetaUrl) {
-      return fetch(
+    async function getMetaList(githubMetaUrl) {
+      const response = await fetch(
         githubMetaUrl,
         {
           method: 'get',
@@ -64,7 +64,9 @@ export default async function ({
             'Accept': 'application/json'
           }
         }
-      ).then(result => result.json());
+      );
+
+      return response.json();
     }
 
     function whiteListMiddleware(req, res, next) {
