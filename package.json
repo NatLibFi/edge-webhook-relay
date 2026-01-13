@@ -31,16 +31,16 @@
     "test:dev": "clear && npm run lint:dev"
   },
   "dependencies": {
-    "@natlibfi/melinda-backend-commons": "next",
-    "@natlibfi/melinda-commons": "next",
-    "body-parser": "^2.2.0",
-    "express": "^5.1.0",
+    "@natlibfi/melinda-backend-commons": "^3.0.2",
+    "@natlibfi/melinda-commons": "^14.0.2",
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
     "http-status": "^2.1.0",
     "ip-range-check": "^0.2.0"
   },
   "devDependencies": {
     "cross-env": "^10.1.0",
-    "esbuild": "^0.25.11",
-    "eslint": "^9.38.0"
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2"
   }
 }
