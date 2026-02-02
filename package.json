@@ -31,7 +31,7 @@
     "test:dev": "clear && npm run lint:dev"
   },
   "dependencies": {
-    "@natlibfi/melinda-backend-commons": "^3.0.2",
+    "@natlibfi/melinda-backend-commons": "^3.0.4",
     "@natlibfi/melinda-commons": "^14.0.2",
     "body-parser": "^2.2.2",
     "express": "^5.2.1",
